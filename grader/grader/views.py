@@ -49,22 +49,24 @@ def test(request):
 	name = request.FILES['code'].name
 	file_content = ContentFile( request.FILES['code'].read() )
 	now = "temp-" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-	#try:
-	os.mkdir(os.path.join(BASE_PATH, str(now)))
-	filename = os.path.join(BASE_PATH, str(now), name)
-	fout = open(filename, 'wb+')
-	for chunk in file_content.chunks():
-		fout.write(chunk)
-	fout.close()
-	arg_string = "cp " + os.path.join(settings.BASE_DIR,"3240HW4Grader.py") + " " + os.path.join(BASE_PATH,str(now))
-	arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test1.txt") + " " + os.path.join(BASE_PATH,str(now))
-	arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test2.jpg") + " " + os.path.join(BASE_PATH,str(now))
-	arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test3.txt") + " " + os.path.join(BASE_PATH,str(now))
-	arg_string += ";python3 " +os.path.join(BASE_PATH,str(now),"3240HW4Grader.py -d")
-	results = RunCmd(arg_string, 60).Run()
-	#subprocess.call("copy " + os.path.join(settings.BASE_DIR,"3240HW4Grader.py") + " " + os.path.join(BASE_PATH,str(now)), shell=True)
-	#results = subprocess.check_output("py -3 " +os.path.join(BASE_PATH,str(now),"3240HW4Grader.py -d"), shell=True)
-	results = results.replace(b'\n',b'<br />')
+	try:
+		os.mkdir(os.path.join(BASE_PATH, str(now)))
+		filename = os.path.join(BASE_PATH, str(now), name)
+		fout = open(filename, 'wb+')
+		for chunk in file_content.chunks():
+			fout.write(chunk)
+		fout.close()
+		arg_string = "cp " + os.path.join(settings.BASE_DIR,"3240HW4Grader.py") + " " + os.path.join(BASE_PATH,str(now))
+		arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test1.txt") + " " + os.path.join(BASE_PATH,str(now))
+		arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test2.jpg") + " " + os.path.join(BASE_PATH,str(now))
+		arg_string += ";cp " + os.path.join(settings.BASE_DIR,"3240test3.txt") + " " + os.path.join(BASE_PATH,str(now))
+		arg_string += ";python3 " +os.path.join(BASE_PATH,str(now),"3240HW4Grader.py -d")
+		results = RunCmd(arg_string, 60).Run()
+		#subprocess.call("copy " + os.path.join(settings.BASE_DIR,"3240HW4Grader.py") + " " + os.path.join(BASE_PATH,str(now)), shell=True)
+		#results = subprocess.check_output("py -3 " +os.path.join(BASE_PATH,str(now),"3240HW4Grader.py -d"), shell=True)
+		results = results.replace(b'\n',b'<br />')
+	except:
+		results = "Sorry something went wrong. Try again or email David."
 	return HttpResponse(results)
 	#except:
 	#	return HttpResponse('File Upload Error: Please try again.')
