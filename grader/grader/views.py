@@ -45,7 +45,7 @@ def index(request):
 	return HttpResponse('<html><title> 3240 HW4 Grading Site </title><body>Submit your HW4 script. This is <b> NOT </b> turning it in for grading. Use collab for that. This is just to test.<br />Again <b>WE DO NOT SAVE THESE, YOU STILL NEED TO SUBMIT TO COLLAB</b><form method="post" enctype="multipart/form-data" action="/test"><input type="file" name="code" /><input type="submit" name="submit" value="Upload" /></form></body></html>')
 
 def test(request):
-	BASE_PATH="C:\\Users\\User\\"
+	BASE_PATH="/home/ubuntu/files"
 	name = request.FILES['code'].name
 	file_content = ContentFile( request.FILES['code'].read() )
 	now = "temp-" + datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -61,7 +61,7 @@ def test(request):
 	results = RunCmd(arg_string, 60).Run()
 	#subprocess.call("copy " + os.path.join(settings.BASE_DIR,"3240HW4Grader.py") + " " + os.path.join(BASE_PATH,str(now)), shell=True)
 	#results = subprocess.check_output("py -3 " +os.path.join(BASE_PATH,str(now),"3240HW4Grader.py -d"), shell=True)
-	#results = results.replace(b'\n',b'<br />')
+	results = results.replace(b'\n',b'<br />')
 	return HttpResponse(results)
 	#except:
 	#	return HttpResponse('File Upload Error: Please try again.')
